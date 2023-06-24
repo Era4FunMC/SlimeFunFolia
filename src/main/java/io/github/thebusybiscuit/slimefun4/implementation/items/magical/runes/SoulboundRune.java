@@ -54,7 +54,7 @@ public class SoulboundRune extends SimpleSlimefunItem<ItemDropHandler> {
                     return true;
                 }
 
-                Slimefun.runSync(() -> activate(p, item), 20L);
+                Slimefun.runSync(() -> activate(p, item), 20L,p.getLocation());
 
                 return true;
             }
@@ -97,7 +97,7 @@ public class SoulboundRune extends SimpleSlimefunItem<ItemDropHandler> {
                     } else {
                         Slimefun.getLocalization().sendMessage(p, "messages.soulbound-rune.fail", true);
                     }
-                }, 10L);
+                }, 10L,p.getLocation());
             } else {
                 Slimefun.getLocalization().sendMessage(p, "messages.soulbound-rune.fail", true);
             }

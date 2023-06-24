@@ -248,7 +248,7 @@ public abstract class Network {
     public void display() {
         if (manager.isVisualizerEnabled()) {
             // TODO: Make Color configurable / network-dependent
-            Slimefun.runSync(new NetworkVisualizer(this, Color.BLUE));
+            Slimefun.runSync(new NetworkVisualizer(this, Color.BLUE),regulator);
         }
     }
 

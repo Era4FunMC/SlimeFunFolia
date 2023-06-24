@@ -339,7 +339,7 @@ public abstract class Reactor extends AbstractEnergyProvider implements Hologram
 
                 BlockStorage.getInventory(l).close();
                 removeHologram(l.getBlock());
-            });
+            },l);
 
             explosionsQueue.remove(l);
             processor.endOperation(l);
@@ -360,7 +360,7 @@ public abstract class Reactor extends AbstractEnergyProvider implements Hologram
             if (l.getBlock().getRelative(randomNeighbour).getType() != Material.WATER) {
                 explosionsQueue.add(l);
             }
-        });
+        },l);
     }
 
     private void createByproduct(@Nonnull Location l, @Nonnull BlockMenu inv, @Nullable BlockMenu accessPort, @Nonnull FuelOperation operation) {

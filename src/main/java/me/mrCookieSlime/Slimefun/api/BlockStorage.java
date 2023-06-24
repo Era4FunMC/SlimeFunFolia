@@ -783,7 +783,7 @@ public class BlockStorage {
             for (HumanEntity human : new ArrayList<>(menu.toInventory().getViewers())) {
                 // Prevents "java.lang.IllegalStateException: Asynchronous entity add!"
                 // when closing the inventory while holding an item
-                Slimefun.runSync(human::closeInventory);
+                Slimefun.runSync(human::closeInventory,l);
             }
 
             inventories.get(l).delete(l);

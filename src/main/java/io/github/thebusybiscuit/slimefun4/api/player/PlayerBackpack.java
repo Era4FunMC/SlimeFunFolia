@@ -129,11 +129,11 @@ public class PlayerBackpack {
      *            The players who this Backpack will be shown to
      */
     public void open(Player... players) {
-        Slimefun.runSync(() -> {
-            for (Player p : players) {
+        for (Player p : players) {
+            Slimefun.runSync(() -> {
                 p.openInventory(inventory);
-            }
-        });
+            },p.getLocation());
+        }
     }
 
     /**
@@ -155,7 +155,7 @@ public class PlayerBackpack {
             }
 
             future.complete(null);
-        });
+        },inventory.getLocation());
 
         return future;
     }

@@ -78,7 +78,7 @@ class GitHubTask implements Runnable {
 
         if (requests >= MAX_REQUESTS_PER_MINUTE && Slimefun.instance() != null && Slimefun.instance().isEnabled()) {
             // Slow down API requests and wait a minute after more than x requests were made
-            Bukkit.getScheduler().runTaskLaterAsynchronously(Slimefun.instance(), this::grabTextures, 2 * 60 * 20L);
+            Bukkit.getAsyncScheduler().runDelayed(Slimefun.instance(),c->this.grabTextures(), 2 * 60 * 20L * 50L,TimeUnit.MILLISECONDS);
         }
 
         for (GitHubConnector connector : gitHubService.getConnectors()) {
@@ -119,7 +119,7 @@ class GitHubTask implements Runnable {
 
                 // Retry after 5 minutes if it was just rate-limiting
                 if (msg != null && msg.contains("429")) {
-                    Bukkit.getScheduler().runTaskLaterAsynchronously(Slimefun.instance(), this::grabTextures, 5 * 60 * 20L);
+                    Bukkit.getAsyncScheduler().runDelayed(Slimefun.instance(), c -> this.grabTextures(), 5 * 60 * 20L * 50L,TimeUnit.MILLISECONDS);
                 }
 
                 return -1;

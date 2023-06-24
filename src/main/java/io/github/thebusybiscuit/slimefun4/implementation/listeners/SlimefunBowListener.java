@@ -67,7 +67,7 @@ public class SlimefunBowListener implements Listener {
             if (e.getEntity().isValid() && e.getEntity() instanceof Arrow) {
                 projectiles.remove(e.getEntity().getUniqueId());
             }
-        }, 4L);
+        }, 4L,e.getEntity().getLocation());
     }
 
     @EventHandler(priority = EventPriority.HIGH)

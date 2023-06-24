@@ -86,7 +86,7 @@ public class PressureChamber extends MultiBlockMachine {
                     p.getWorld().playSound(p.getLocation(), Sound.ENTITY_ARROW_HIT_PLAYER, 1F, 1F);
                     handleCraftedItem(output, dispenser, dispInv);
                 }
-            }, i * 20L);
+            }, i * 20L,p.getLocation());
         }
     }
 

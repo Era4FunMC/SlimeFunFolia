@@ -118,7 +118,7 @@ public final class TeleportationManager {
                     index++;
                 }
 
-                Slimefun.runSync(() -> menu.open(p));
+                Slimefun.runSync(() -> menu.open(p),p.getLocation());
             });
         }
     }
@@ -205,7 +205,7 @@ public final class TeleportationManager {
                 source.getWorld().spawnParticle(Particle.PORTAL, source, progress * 2, 0.2F, 0.8F, 0.2F);
                 source.getWorld().playSound(source, Sound.BLOCK_BEACON_AMBIENT, 1F, 0.6F);
 
-                Slimefun.runSync(() -> updateProgress(uuid, speed, progress + speed, source, destination, resistance), 10L);
+                Slimefun.runSync(() -> updateProgress(uuid, speed, progress + speed, source, destination, resistance), 10L,p.getLocation());
             }
         } else {
             cancel(uuid, p);
@@ -238,7 +238,7 @@ public final class TeleportationManager {
                  */
                 cancel(p.getUniqueId(), p);
             }
-        });
+        },p.getLocation());
     }
 
 }

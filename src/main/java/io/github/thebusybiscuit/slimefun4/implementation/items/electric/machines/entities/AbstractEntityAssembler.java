@@ -212,7 +212,7 @@ public abstract class AbstractEntityAssembler<T extends Entity> extends SimpleSl
                             spawnEntity(loc);
 
                             b.getWorld().playEffect(b.getLocation(), Effect.STEP_SOUND, getHead().getType());
-                        });
+                        },b.getLocation());
                     }
                 }
             }

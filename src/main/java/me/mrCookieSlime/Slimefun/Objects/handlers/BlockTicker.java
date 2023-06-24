@@ -13,7 +13,7 @@ import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
 
 public abstract class BlockTicker implements ItemHandler {
 
-    protected boolean unique = true;
+    protected volatile boolean unique = true;
 
     public void update() {
         if (unique) {

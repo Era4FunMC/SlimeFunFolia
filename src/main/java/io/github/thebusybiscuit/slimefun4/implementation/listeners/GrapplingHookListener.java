@@ -76,7 +76,7 @@ public class GrapplingHookListener implements Listener {
             if (e.getEntity() instanceof Arrow arrow) {
                 handleGrapplingHook(arrow);
             }
-        }, 2L);
+        }, 2L,e.getEntity().getLocation());
     }
 
     @EventHandler
@@ -187,7 +187,7 @@ public class GrapplingHookListener implements Listener {
                 player.setVelocity(velocity);
 
                 hook.remove();
-                Slimefun.runSync(() -> activeHooks.remove(player.getUniqueId()), 20L);
+                Slimefun.runSync(() -> activeHooks.remove(player.getUniqueId()), 20L,arrow.getLocation());
             }
         }
     }
@@ -214,8 +214,8 @@ public class GrapplingHookListener implements Listener {
                 Slimefun.runSync(() -> {
                     activeHooks.remove(uuid);
                     invulnerability.remove(uuid);
-                }, 20L);
+                }, 20L,p.getLocation());
             }
-        }, despawnTicks);
+        }, despawnTicks,p.getLocation());
     }
 }

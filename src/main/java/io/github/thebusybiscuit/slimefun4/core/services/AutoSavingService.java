@@ -3,6 +3,7 @@ package io.github.thebusybiscuit.slimefun4.core.services;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 
 import javax.annotation.Nonnull;
@@ -39,8 +40,8 @@ public class AutoSavingService {
     public void start(@Nonnull Slimefun plugin, int interval) {
         this.interval = interval;
 
-        plugin.getServer().getScheduler().runTaskTimer(plugin, this::saveAllPlayers, 2000L, interval * 60L * 20L);
-        plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, this::saveAllBlocks, 2000L, interval * 60L * 20L);
+        Bukkit.getAsyncScheduler().runAtFixedRate(plugin,c->{this.saveAllPlayers();}, 2000L * 50L, interval * 60L * 20L * 50L, TimeUnit.MILLISECONDS);
+        Bukkit.getAsyncScheduler().runAtFixedRate(plugin, c-> {this.saveAllBlocks();}, 2000L * 50L, interval * 60L * 20L * 50L, TimeUnit.MILLISECONDS);
 
     }
 

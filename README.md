@@ -28,7 +28,7 @@ Slimefun 4 can be downloaded **for free** on our builds page.<br>
 We currently provide two distinct versions of Slimefun, development builds and "stable" builds.<br>
 Here is a full summary of the differences between the two different versions of Slimefun.
 
-| | development (latest) | "stable" |
+| | d**evelopment (latest) | "stab**le" |
 | ------------------ | -------- | -------- |
 | **Minecraft version(s)** | :video_game: **1.16.\* - 1.20.\*** | :video_game: **1.14.\* - 1.19.\*** |
 | **Java version** | :computer: **Java 16 (or higher)** | :computer: **Java 16 (or higher)** |

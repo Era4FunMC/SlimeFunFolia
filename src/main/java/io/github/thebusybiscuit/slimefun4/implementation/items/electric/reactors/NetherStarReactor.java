@@ -48,7 +48,7 @@ public abstract class NetherStarReactor extends Reactor {
                     livingEntity.addPotionEffect(new PotionEffect(PotionEffectType.WITHER, 60, 1));
                 }
             }
-        });
+        },l);
     }
 
     @Override

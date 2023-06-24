@@ -258,7 +258,7 @@ public abstract class BlockMenuPreset extends ChestMenu {
             } catch (Exception | LinkageError x) {
                 getSlimefunItem().error("An Error occurred while trying to create a BlockMenu", x);
             }
-        });
+        },l);
     }
 
     /**

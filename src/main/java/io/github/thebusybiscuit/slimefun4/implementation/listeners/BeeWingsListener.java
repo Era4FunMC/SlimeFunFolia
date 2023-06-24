@@ -45,7 +45,7 @@ public class BeeWingsListener implements Listener {
         ItemStack chestplate = player.getInventory().getChestplate();
 
         if (wings.isItem(chestplate) && wings.canUse(player, true)) {
-            new BeeWingsTask(player).scheduleRepeating(3, 1);
+            new BeeWingsTask(player).scheduleRepeating(3, 1,player.getLocation());
         }
     }
 }

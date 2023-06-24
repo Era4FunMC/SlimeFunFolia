@@ -122,7 +122,7 @@ public class ArmorTask implements Runnable {
                             p.addPotionEffect(effect);
                         }
                     }
-                });
+                },p.getLocation());
             }
         }
     }
@@ -188,7 +188,7 @@ public class ArmorTask implements Runnable {
                     if (radioactiveFire) {
                         p.setFireTicks(400);
                     }
-                });
+                },p.getLocation());
 
                 return true;
             }

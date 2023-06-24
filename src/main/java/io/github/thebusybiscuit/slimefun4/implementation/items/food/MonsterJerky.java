@@ -36,7 +36,7 @@ public class MonsterJerky extends SimpleSlimefunItem<ItemConsumptionHandler> {
             }
 
             p.addPotionEffect(new PotionEffect(PotionEffectType.SATURATION, 5, 0));
-        }, 1L);
+        }, 1L,p.getLocation());
     }
 
 }

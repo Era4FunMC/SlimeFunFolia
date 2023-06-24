@@ -206,7 +206,7 @@ class MiningTask implements Runnable {
                         ores++;
 
                         // Repeat the same column when we hit an ore.
-                        Slimefun.runSync(this, 4);
+                        Slimefun.runSync(this, 4,new Location(world,x,y,z));
                         return;
                     }
                 }
@@ -244,7 +244,7 @@ class MiningTask implements Runnable {
             return;
         }
 
-        Slimefun.runSync(this, 5);
+        Slimefun.runSync(this, 5,start.toLocation());
     }
 
     /**

@@ -336,7 +336,7 @@ public class GPSNetwork {
                     p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1F, 1F);
                     Slimefun.getLocalization().sendMessage(p, "gps.waypoint.added", true);
                 }
-            });
+            },p.getLocation());
         });
     }
 

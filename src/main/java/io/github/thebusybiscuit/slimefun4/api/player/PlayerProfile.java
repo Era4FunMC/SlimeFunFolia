@@ -393,7 +393,7 @@ public class PlayerProfile {
             return true;
         }
 
-        Bukkit.getScheduler().runTaskAsynchronously(Slimefun.instance(), () -> {
+        Bukkit.getAsyncScheduler().runNow(Slimefun.instance(),a->{
             AsyncProfileLoadEvent event = new AsyncProfileLoadEvent(new PlayerProfile(p));
             Bukkit.getPluginManager().callEvent(event);
 
@@ -418,11 +418,10 @@ public class PlayerProfile {
 
         if (!Slimefun.getRegistry().getPlayerProfiles().containsKey(p.getUniqueId())) {
             // Should probably prevent multiple requests for the same profile in the future
-            Bukkit.getScheduler().runTaskAsynchronously(Slimefun.instance(), () -> {
+            Bukkit.getAsyncScheduler().runNow(Slimefun.instance(),a->{
                 PlayerProfile pp = new PlayerProfile(p);
                 Slimefun.getRegistry().getPlayerProfiles().put(p.getUniqueId(), pp);
             });
-
             return false;
         }
 

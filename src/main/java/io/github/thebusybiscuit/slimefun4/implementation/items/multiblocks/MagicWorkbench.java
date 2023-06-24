@@ -108,7 +108,7 @@ public class MagicWorkbench extends AbstractCraftingTable {
                     p.getWorld().playSound(p.getLocation(), Sound.ENTITY_ARROW_HIT_PLAYER, 1F, 1F);
                     handleCraftedItem(output, dispenser, dispInv);
                 }
-            }, j * 20L);
+            }, j * 20L,p.getLocation());
         }
     }
 

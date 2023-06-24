@@ -73,7 +73,7 @@ class BackpackCommand extends SubCommand {
                         Slimefun.getBackpackListener().setBackpackId(backpackOwner, item, 2, id);
                         player.getInventory().addItem(item);
                         Slimefun.getLocalization().sendMessage(sender, "commands.backpack.restored-backpack-given");
-                    });
+                    },player.getLocation());
                 });
             } else {
                 Slimefun.getLocalization().sendMessage(sender, "messages.no-permission", true);

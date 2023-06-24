@@ -7,7 +7,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
+import java.util.logging.LogManager;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
@@ -15,12 +17,16 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import com.destroystokyo.paper.event.server.ServerTickStartEvent;
+import io.papermc.paper.threadedregions.scheduler.ScheduledTask;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Server;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.plugin.Plugin;
@@ -132,7 +138,7 @@ import me.mrCookieSlime.Slimefun.api.inventory.UniversalBlockMenu;
  *
  * @author TheBusyBiscuit
  */
-public final class Slimefun extends JavaPlugin implements SlimefunAddon {
+public final class Slimefun extends JavaPlugin implements SlimefunAddon,Listener{
 
     /**
      * This is the Java version we recommend server owners to use.
@@ -252,6 +258,24 @@ public final class Slimefun extends JavaPlugin implements SlimefunAddon {
         loadTags();
     }
 
+    private boolean inited = false;
+
+    @EventHandler
+    private void onServerTickStarted(ServerTickStartEvent event){
+        if (!this.inited){
+            textureService.register(registry.getAllSlimefunItems(), true);
+            permissionsService.register(registry.getAllSlimefunItems(), true);
+
+            // This try/catch should prevent buggy Spigot builds from blocking item loading
+            try {
+                recipeService.refresh();
+            } catch (Exception | LinkageError x) {
+                Bukkit.getLogger().log(Level.SEVERE, x, () -> "An Exception occurred while iterating through the Recipe list on Minecraft Version " + minecraftVersion.getName() + " (Slimefun v" + getVersion() + ")");
+            }
+        }
+        this.inited = true;
+    }
+
     /**
      * This is our start method for a correct Slimefun installation.
      */
@@ -335,18 +359,7 @@ public final class Slimefun extends JavaPlugin implements SlimefunAddon {
         registerListeners();
 
         // Initiating various Stuff and all items with a slight delay (0ms after the Server finished loading)
-        runSync(new SlimefunStartupTask(this, () -> {
-            textureService.register(registry.getAllSlimefunItems(), true);
-            permissionsService.register(registry.getAllSlimefunItems(), true);
-
-            // This try/catch should prevent buggy Spigot builds from blocking item loading
-            try {
-                recipeService.refresh();
-            } catch (Exception | LinkageError x) {
-                logger.log(Level.SEVERE, x, () -> "An Exception occurred while iterating through the Recipe list on Minecraft Version " + minecraftVersion.getName() + " (Slimefun v" + getVersion() + ")");
-            }
-
-        }), 0);
+        Bukkit.getPluginManager().registerEvents(this,this);
 
         // Setting up our commands
         try {
@@ -358,7 +371,7 @@ public final class Slimefun extends JavaPlugin implements SlimefunAddon {
         // Armor Update Task
         if (config.getBoolean("options.enable-armor-effects")) {
             boolean radioactiveFire = config.getBoolean("options.burn-players-when-radioactive");
-            getServer().getScheduler().runTaskTimerAsynchronously(this, new ArmorTask(radioactiveFire), 0L, config.getInt("options.armor-update-interval") * 20L);
+            getServer().getAsyncScheduler().runAtFixedRate(this,c-> new ArmorTask(radioactiveFire).run(), 0L, config.getInt("options.armor-update-interval") * 20L * 50L, TimeUnit.MILLISECONDS);
         }
 
         // Starting our tasks
@@ -397,7 +410,8 @@ public final class Slimefun extends JavaPlugin implements SlimefunAddon {
         }
 
         // Cancel all tasks from this plugin immediately
-        Bukkit.getScheduler().cancelTasks(this);
+        Bukkit.getAsyncScheduler().cancelTasks(this);
+        Bukkit.getGlobalRegionScheduler().cancelTasks(this);
 
         // Finishes all started movements/removals of block data
         try {
@@ -995,7 +1009,7 @@ public final class Slimefun extends JavaPlugin implements SlimefunAddon {
      * 
      * @return The resulting {@link BukkitTask} or null if Slimefun was disabled
      */
-    public static @Nullable BukkitTask runSync(@Nonnull Runnable runnable, long delay) {
+    public static @Nullable ScheduledTask runSync(@Nonnull Runnable runnable, long delay, Location location) {
         Validate.notNull(runnable, "Cannot run null");
         Validate.isTrue(delay >= 0, "The delay cannot be negative");
 
@@ -1009,7 +1023,7 @@ public final class Slimefun extends JavaPlugin implements SlimefunAddon {
             return null;
         }
 
-        return instance.getServer().getScheduler().runTaskLater(instance, runnable, delay);
+        return instance.getServer().getRegionScheduler().runDelayed(instance, location,a -> runnable.run(), delay);
     }
 
     /**
@@ -1024,20 +1038,19 @@ public final class Slimefun extends JavaPlugin implements SlimefunAddon {
      * 
      * @return The resulting {@link BukkitTask} or null if Slimefun was disabled
      */
-    public static @Nullable BukkitTask runSync(@Nonnull Runnable runnable) {
+    public static @Nullable void runSync(@Nonnull Runnable runnable,Location location) {
         Validate.notNull(runnable, "Cannot run null");
 
         // Run the task instantly within a Unit Test
         if (getMinecraftVersion() == MinecraftVersion.UNIT_TEST) {
             runnable.run();
-            return null;
+            return;
         }
 
         if (instance == null || !instance.isEnabled()) {
-            return null;
+            return;
         }
-
-        return instance.getServer().getScheduler().runTask(instance, runnable);
+        instance.getServer().getRegionScheduler().execute(instance , location, runnable);
     }
 
 }

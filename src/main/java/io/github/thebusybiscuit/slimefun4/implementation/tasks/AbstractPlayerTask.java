@@ -2,30 +2,34 @@ package io.github.thebusybiscuit.slimefun4.implementation.tasks;
 
 import javax.annotation.Nonnull;
 
+import io.papermc.paper.threadedregions.scheduler.ScheduledTask;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 
+import java.util.concurrent.TimeUnit;
+
 abstract class AbstractPlayerTask implements Runnable {
 
     protected final Player p;
-    private int id;
+    private ScheduledTask task;
 
     AbstractPlayerTask(@Nonnull Player p) {
         this.p = p;
     }
 
-    private void setID(int id) {
-        this.id = id;
+    private void setID(ScheduledTask task) {
+        this.task = task;
     }
 
     public void schedule(long delay) {
-        setID(Bukkit.getScheduler().scheduleSyncDelayedTask(Slimefun.instance(), this, delay));
+        //setID(Bukkit.getScheduler().scheduleSyncDelayedTask(Slimefun.instance(), this, delay));
     }
 
-    public void scheduleRepeating(long delay, long interval) {
-        setID(Bukkit.getScheduler().scheduleSyncRepeatingTask(Slimefun.instance(), this, delay, interval));
+    public void scheduleRepeating(long delay, long interval, Location location) {
+        setID(Bukkit.getRegionScheduler().runAtFixedRate(Slimefun.instance(), location,a -> this.run(), delay, interval));
     }
 
     @Override
@@ -39,7 +43,10 @@ abstract class AbstractPlayerTask implements Runnable {
      * This method cancels this {@link AbstractPlayerTask}.
      */
     public final void cancel() {
-        Bukkit.getScheduler().cancelTask(id);
+        if (this.task == null){
+            return;
+        }
+        this.task.cancel();
     }
 
     /**

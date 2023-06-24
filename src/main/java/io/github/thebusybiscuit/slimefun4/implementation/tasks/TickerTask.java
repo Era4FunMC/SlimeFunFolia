@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 
 import javax.annotation.Nonnull;
@@ -56,8 +57,8 @@ public class TickerTask implements Runnable {
     private final Map<BlockPosition, Integer> bugs = new ConcurrentHashMap<>();
 
     private int tickRate;
-    private boolean halted = false;
-    private boolean running = false;
+    private volatile boolean halted = false;
+    private volatile boolean running = false;
 
     /**
      * This method starts the {@link TickerTask} on an asynchronous schedule.
@@ -68,8 +69,9 @@ public class TickerTask implements Runnable {
     public void start(@Nonnull Slimefun plugin) {
         this.tickRate = Slimefun.getCfg().getInt("URID.custom-ticker-delay");
 
-        BukkitScheduler scheduler = plugin.getServer().getScheduler();
-        scheduler.runTaskTimerAsynchronously(plugin, this, 100L, tickRate);
+        //BukkitScheduler scheduler = plugin.getServer().getScheduler();
+        //scheduler.runTaskTimerAsynchronously(plugin, this, 100L, tickRate);
+        Bukkit.getGlobalRegionScheduler().runAtFixedRate(plugin,c-> this.run(),100L,tickRate);
     }
 
     /**
@@ -158,10 +160,11 @@ public class TickerTask implements Runnable {
                      * We are inserting a new timestamp because synchronized actions
                      * are always ran with a 50ms delay (1 game tick)
                      */
-                    Slimefun.runSync(() -> {
-                        Block b = l.getBlock();
-                        tickBlock(l, b, item, data, System.nanoTime());
-                    });
+                     Bukkit.getRegionScheduler().run(Slimefun.instance(),l,(t)->{
+                         Block b = l.getBlock();
+                         Bukkit.getLogger().info("aaaaaaaa");
+                         tickBlock(l, b, item, data, System.nanoTime());
+                     });
                 } else {
                     long timestamp = Slimefun.getProfiler().newEntry();
                     item.getBlockTicker().update();
@@ -204,7 +207,7 @@ public class TickerTask implements Runnable {
             bugs.remove(position);
 
             BlockStorage.deleteLocationInfoUnsafely(l, true);
-            Bukkit.getScheduler().scheduleSyncDelayedTask(Slimefun.instance(), () -> l.getBlock().setType(Material.AIR));
+            Bukkit.getRegionScheduler().runDelayed(Slimefun.instance(),l,a->l.getBlock().setType(Material.AIR),1);
         } else {
             bugs.put(position, errors);
         }

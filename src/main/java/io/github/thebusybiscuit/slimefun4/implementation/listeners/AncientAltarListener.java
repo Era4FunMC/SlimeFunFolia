@@ -154,7 +154,7 @@ public class AncientAltarListener implements Listener {
             UUID uuid = entity.getUniqueId();
             removedItems.add(uuid);
 
-            Slimefun.runSync(() -> removedItems.remove(uuid), 30L);
+            Slimefun.runSync(() -> removedItems.remove(uuid), 30L,p.getLocation());
 
             entity.remove();
             p.playSound(pedestal.getLocation(), Sound.ENTITY_ITEM_PICKUP, 1F, 1F);
@@ -236,7 +236,7 @@ public class AncientAltarListener implements Listener {
                 b.getWorld().playSound(b.getLocation(), Sound.ENTITY_ILLUSIONER_PREPARE_MIRROR, 1, 1);
 
                 AncientAltarTask task = new AncientAltarTask(this, b, altarItem.getStepDelay(), result.get(), pedestals, consumed, p);
-                Slimefun.runSync(task, 10L);
+                Slimefun.runSync(task, 10L,p.getLocation());
             } else {
                 altars.remove(b);
 

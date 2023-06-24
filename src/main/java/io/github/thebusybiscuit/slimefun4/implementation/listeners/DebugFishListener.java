@@ -97,7 +97,7 @@ public class DebugFishListener implements Listener {
 
                 PlayerHead.setSkin(block, HeadTexture.MISSING_TEXTURE.getAsSkin(), true);
                 p.playSound(block.getLocation(), Sound.BLOCK_BAMBOO_PLACE, 1, 1);
-            }, 2L);
+            }, 2L,p.getLocation());
         } else if (BlockStorage.hasBlockInfo(b)) {
             try {
                 sendInfo(p, b);

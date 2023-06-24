@@ -900,7 +900,7 @@ public class ProgrammableAndroid extends SlimefunItem implements InventoryBlock,
                 if (type == Material.PLAYER_HEAD || type == Material.PLAYER_WALL_HEAD) {
                     PlayerHead.setSkin(block, skin, true);
                 }
-            });
+            },block.getLocation());
 
             b.setType(Material.AIR);
             BlockStorage.moveBlockInfo(b.getLocation(), block.getLocation());

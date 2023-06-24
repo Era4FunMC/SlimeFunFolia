@@ -92,9 +92,8 @@ public class IntegrationsManager {
 
         // Load any soft dependencies
         onServerLoad();
-
         // Load any integrations which aren't dependencies (loadBefore)
-        plugin.getServer().getScheduler().runTask(plugin, this::onServerStart);
+        plugin.getServer().getGlobalRegionScheduler().execute(plugin, this::onServerStart);
     }
 
     /**

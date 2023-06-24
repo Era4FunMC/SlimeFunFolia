@@ -86,7 +86,7 @@ public class HologramsService {
      * purge-task.
      */
     public void start() {
-        plugin.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, this::purge, PURGE_RATE, PURGE_RATE);
+        Bukkit.getGlobalRegionScheduler().runAtFixedRate(plugin,a->this.purge(),PURGE_RATE,PURGE_RATE);
     }
 
     /**
@@ -268,7 +268,7 @@ public class HologramsService {
         if (Bukkit.isPrimaryThread()) {
             runnable.run();
         } else {
-            Slimefun.runSync(runnable);
+            Slimefun.runSync(runnable,loc);
         }
     }
 

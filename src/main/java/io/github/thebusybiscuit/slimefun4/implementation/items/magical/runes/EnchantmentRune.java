@@ -76,7 +76,7 @@ public class EnchantmentRune extends SimpleSlimefunItem<ItemDropHandler> {
                         } catch (Exception x) {
                             error("An Exception occurred while trying to apply an Enchantment Rune", x);
                         }
-                    }, 20L);
+                    }, 20L,p.getLocation());
                 }
 
                 return true;
@@ -150,7 +150,7 @@ public class EnchantmentRune extends SimpleSlimefunItem<ItemDropHandler> {
 
                         Slimefun.getLocalization().sendMessage(p, "messages.enchantment-rune.success", true);
                     }
-                }, 10L);
+                }, 10L,p.getLocation());
             } else {
                 Slimefun.getLocalization().sendMessage(p, "messages.enchantment-rune.fail", true);
             }

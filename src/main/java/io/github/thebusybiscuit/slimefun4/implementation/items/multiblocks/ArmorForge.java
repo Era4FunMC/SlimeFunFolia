@@ -92,7 +92,7 @@ public class ArmorForge extends AbstractCraftingTable {
                         p.getWorld().playSound(p.getLocation(), Sound.ENTITY_ARROW_HIT_PLAYER, 1F, 1F);
                         handleCraftedItem(output, dispenser, inv);
                     }
-                }, j * 20L);
+                }, j * 20L,p.getLocation());
             }
 
         } else {

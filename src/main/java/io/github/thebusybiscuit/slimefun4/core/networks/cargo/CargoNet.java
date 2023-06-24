@@ -157,7 +157,7 @@ public class CargoNet extends AbstractItemNetwork implements HologramOwner {
             Slimefun.getProfiler().scheduleEntries(inputs.size() + 1);
 
             CargoNetworkTask runnable = new CargoNetworkTask(this, inputs, outputs);
-            Slimefun.runSync(runnable);
+            Slimefun.runSync(runnable,b.getLocation());
         }
     }
 

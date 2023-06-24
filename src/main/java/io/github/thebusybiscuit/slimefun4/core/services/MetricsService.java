@@ -14,6 +14,7 @@ import java.util.logging.Level;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 
 import io.github.bakedlibs.dough.common.CommonPatterns;
@@ -137,7 +138,7 @@ public class MetricsService {
             String version = metricsClass.getPackage().getImplementationVersion();
 
             // This is required to be sync due to bStats.
-            Slimefun.runSync(() -> {
+            Bukkit.getGlobalRegionScheduler().execute(plugin,() -> {
                 try {
                     start.invoke(null);
                     plugin.getLogger().info("Metrics build #" + version + " started.");

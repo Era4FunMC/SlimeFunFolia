@@ -59,7 +59,7 @@ public class GadgetsListener implements Listener {
                 InfusedMagnet magnet = (InfusedMagnet) SlimefunItems.INFUSED_MAGNET.getItem();
 
                 if (magnet.canUse(p, true)) {
-                    new InfusedMagnetTask(p, magnet.getRadius()).scheduleRepeating(0, 8);
+                    new InfusedMagnetTask(p, magnet.getRadius()).scheduleRepeating(0, 8,p.getLocation());
                 }
             }
         }
@@ -74,10 +74,10 @@ public class GadgetsListener implements Listener {
             double thrust = jetpack.getThrust();
 
             if (thrust > 0.2) {
-                new JetpackTask(p, (Jetpack) chestplate).scheduleRepeating(0, 3);
+                new JetpackTask(p, (Jetpack) chestplate).scheduleRepeating(0, 3,p.getLocation());
             }
         } else if (chestplate instanceof Parachute) {
-            new ParachuteTask(p).scheduleRepeating(0, 3);
+            new ParachuteTask(p).scheduleRepeating(0, 3,p.getLocation());
         }
     }
 
@@ -86,7 +86,7 @@ public class GadgetsListener implements Listener {
             double speed = jetBoots.getSpeed();
 
             if (speed > 0.2) {
-                new JetBootsTask(p, (JetBoots) boots).scheduleRepeating(0, 2);
+                new JetBootsTask(p, (JetBoots) boots).scheduleRepeating(0, 2,p.getLocation());
             }
         }
     }

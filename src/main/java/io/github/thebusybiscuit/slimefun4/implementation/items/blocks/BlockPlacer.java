@@ -260,6 +260,6 @@ public class BlockPlacer extends SlimefunItem {
                     error("An Exception was thrown while a BlockPlacer was performing its action", x);
                 }
             }
-        }, 2L);
+        }, 2L,b.getLocation());
     }
 }

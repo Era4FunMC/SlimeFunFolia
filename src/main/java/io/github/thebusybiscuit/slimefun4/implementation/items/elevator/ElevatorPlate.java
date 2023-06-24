@@ -200,7 +200,7 @@ public class ElevatorPlate extends SimpleSlimefunItem<BlockUseHandler> {
                     player.sendTitle(ChatColor.WHITE + ChatColors.color(floor.getName()), null, 20, 60, 20);
                 }
             });
-        });
+        },player.getLocation());
     }
 
     @ParametersAreNonnullByDefault

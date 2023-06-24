@@ -72,7 +72,7 @@ public class GitHubService {
         long period = TimeUnit.HOURS.toMillis(1);
         GitHubTask task = new GitHubTask(this);
 
-        plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, task, 30 * 20L, period);
+        plugin.getServer().getAsyncScheduler().runAtFixedRate(plugin,c->task.run(), 30 * 20L * 50L, period * 50L,TimeUnit.MILLISECONDS);
     }
 
     /**
